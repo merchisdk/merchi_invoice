@@ -1,0 +1,9 @@
+{
+  "name": "merchi_invoice",
+  "version": "1.0.0",
+  "description": "Merchi Invoice",
+  "main": "index.js",
+  "repository": "git@github.com:merchisdk/merchi_invoice.git",
+  "author": "Amtron <james@newgenstudio.com>",
+  "license": "MIT"
+}
