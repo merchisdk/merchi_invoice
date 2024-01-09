@@ -25,6 +25,7 @@ interface Props {
   classNameMerchiInvoiceButtonPayInvoice?: string;
   callbackCreditCardPaymentSuccess?: (invoiceJson: any) => void;
   invoice: any;
+  urlApi?: string;
 }
 
 function MerchiInvoice({
@@ -33,6 +34,7 @@ function MerchiInvoice({
   classNameMerchiInvoiceButtonPayInvoice = 'btn btn-lg btn-primary btn-block',
   callbackCreditCardPaymentSuccess = console.log,
   invoice = {},
+  urlApi = 'https://api.merchi.co/v6/',
 }: Props) {
   const [activeTab, setActiveTab] = useState(
     defaultActivePaymentTab(invoice) || payWithStripe
@@ -54,6 +56,7 @@ function MerchiInvoice({
         }
         invoice={invoice}
         alertErrorShow={alertErrorShow}
+        urlApi={urlApi}
       />
       {!paid && (
         <>
@@ -64,6 +67,7 @@ function MerchiInvoice({
                   alertErrorShow={alertErrorShow}
                   invoice={invoice}
                   callbackPaymentSuccess={callbackCreditCardPaymentSuccess}
+                  urlApi={urlApi}
                 />
               </Container>
             )}
