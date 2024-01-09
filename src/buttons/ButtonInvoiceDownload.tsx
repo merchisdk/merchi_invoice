@@ -28,7 +28,7 @@ export async function generatePublicInvoicePdf(urlApi: string, invoice: any, rec
   };
   const uri = receipt ? 'generate/receipt/pdf/' : 'generate/pdf/';
   try {
-    const response = await fetch(`${urlApi}invoices/${id}/${uri}`, fetchOptions);
+    const response = await fetch(`${urlApi}invoices/${id}/${uri}?${queryString}`, fetchOptions);
 
     if (!response.ok) {
       throw new Error("Error fetching PDF.");
