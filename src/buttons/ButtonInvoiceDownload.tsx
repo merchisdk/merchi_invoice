@@ -26,9 +26,9 @@ export async function generatePublicInvoicePdf(urlApi: string, invoice: any, rec
     method: 'GET',
     mode: 'cors'
   };
-  const uri = receipt ? '/generate/receipt/pdf/' : '/generate/pdf/';
+  const uri = receipt ? 'generate/receipt/pdf/' : 'generate/pdf/';
   try {
-    const response = await fetch(urlApi, fetchOptions);
+    const response = await fetch(`${urlApi}${uri}`, fetchOptions);
 
     if (!response.ok) {
       throw new Error("Error fetching PDF.");
