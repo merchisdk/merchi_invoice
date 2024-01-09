@@ -5,12 +5,14 @@ interface Props {
   alertErrorShow: (alert: any) => void;
   classNameMerchiInvoiceButtonDownloadInvoice: string;
   invoice: any;
+  urlApi: string;
 }
 
 function InvoiceInfo({
   alertErrorShow,
   classNameMerchiInvoiceButtonDownloadInvoice,
   invoice,
+  urlApi,
 }: Props) {
   const { id, unpaid } = invoice;
   const paid = !unpaid;
@@ -30,6 +32,7 @@ function InvoiceInfo({
             classNameMerchiInvoiceButtonDownloadInvoice
           }
           invoice={invoice}
+          urlApi={urlApi}
         />
       </div>
     </div>

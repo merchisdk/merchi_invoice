@@ -1,6 +1,6 @@
 {
   "name": "merchi_invoice",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Merchi Invoice",
   "main": "lib/index.js",
   "module": "src/index.tsx",

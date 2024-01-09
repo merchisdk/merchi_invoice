@@ -4,11 +4,12 @@ import { CreditCard, PaymentForm } from 'react-square-web-payments-sdk';
 import { currencyMap } from '../currency';
 
 export async function actionSquarePaymentProcess(
+  urlApi: string,
   invoice: any,
   sourceId: string,
 ) {
   let invoiceJson = invoice;
-  let url = `${process.env.NEXT_PUBLIC_API_URL}invoice/${invoiceJson.id}/square/payment/`;
+  let url = `${urlApi}invoice/${invoiceJson.id}/square/payment/`;
   const fetchOptions: any = {
     method: 'GET',
     query: [['sourceId', sourceId]],
@@ -24,12 +25,14 @@ interface Props {
   alertErrorShow: (message: string) => void;
   invoice: any;
   callbackPaymentSuccess: (invoiceJson: any) => void;
+  urlApi: string;
 }
 
 function SquareCard({
   alertErrorShow,
   invoice,
   callbackPaymentSuccess,
+  urlApi,
 }: Props) {
   const [laoding, setLoading] = useState(false);
   const { currency, domain, totalCost } = invoice;
@@ -46,7 +49,7 @@ function SquareCard({
   async function submit(sourceId: any) {
     setLoading(true);
     try {
-      const r =  await actionSquarePaymentProcess(invoice, sourceId);
+      const r =  await actionSquarePaymentProcess(urlApi, invoice, sourceId);
       setLoading(false);
       callbackPaymentSuccess(r)
     } catch (e: any) {

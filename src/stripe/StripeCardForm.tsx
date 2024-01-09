@@ -16,6 +16,7 @@ interface Props {
   callbackStripePaymentSuccess: (invoiceJson: any) => void;
   invoice: any;
   PaymentButton?: any;
+  urlApi: string;
 }
 
 function StripeCardForm({
@@ -23,6 +24,7 @@ function StripeCardForm({
   callbackStripePaymentSuccess,
   invoice,
   PaymentButton,
+  urlApi,
 }: Props) {
   const { domain } = invoice;
   const company = domain.company;
@@ -34,7 +36,7 @@ function StripeCardForm({
   async function doStripePayment(r: any) {
     setLoadingStripePayment(true);
     try {
-      const response = await stripeCardFormSubmit(r.stripe, r.card, invoice);
+      const response = await stripeCardFormSubmit(urlApi, r.stripe, r.card, invoice);
       callbackStripePaymentSuccess(response);
       setLoadingStripePayment(false);
     } catch (e: any) {
@@ -47,7 +49,7 @@ function StripeCardForm({
   ) {
     setLoadingStripePaymentButtons(true);
     try {
-      const response = await stripePaymentButtonSubmit(stripe, invoice, event);
+      const response = await stripePaymentButtonSubmit(urlApi, stripe, invoice, event);
       callbackStripePaymentSuccess(response);
       setLoadingStripePaymentButtons(false);
     } catch (e: any) {
@@ -57,7 +59,7 @@ function StripeCardForm({
   }
   const [stripePublicKey, setStripePublicKey] = useState(companyPubKey);
   useEffect(() => {
-    if (!stripePublicKey && canUseConnect) stripeInitPromise().then(setStripePublicKey)
+    if (!stripePublicKey && canUseConnect) stripeInitPromise(urlApi).then(setStripePublicKey)
   }, [stripePublicKey, canUseConnect]);
   return (
     <>
