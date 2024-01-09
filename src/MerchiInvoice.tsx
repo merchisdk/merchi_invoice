@@ -94,6 +94,7 @@ function MerchiInvoice({
                     callbackCreditCardPaymentSuccess
                   }
                   PaymentButton={PaymentButton}
+                  urlApi={urlApi}
                 />
               </Container>
             </div>
