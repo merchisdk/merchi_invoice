@@ -20,18 +20,18 @@ export function defaultActivePaymentTab(invoice: any) {
 }
 
 interface Props {
-  alertErrorShow: (message: string) => void;
+  alertErrorShow?: (message: string) => void;
   classNameMerchiInvoiceButtonDownloadInvoice?: string;
   classNameMerchiInvoiceButtonPayInvoice?: string;
-  callbackCreditCardPaymentSuccess: (invoiceJson: any) => void;
+  callbackCreditCardPaymentSuccess?: (invoiceJson: any) => void;
   invoice: any;
 }
 
 function MerchiInvoice({
-  alertErrorShow,
+  alertErrorShow = console.error,
   classNameMerchiInvoiceButtonDownloadInvoice = 'btn btn-lg btn-primary',
   classNameMerchiInvoiceButtonPayInvoice = 'btn btn-lg btn-primary btn-block',
-  callbackCreditCardPaymentSuccess,
+  callbackCreditCardPaymentSuccess = console.log,
   invoice = {},
 }: Props) {
   const [activeTab, setActiveTab] = useState(
