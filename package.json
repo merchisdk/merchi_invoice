@@ -1,13 +1,13 @@
 {
   "name": "merchi_invoice",
-  "version": "1.0.0",
+  "version": "1.2.0",
   "description": "Merchi Invoice",
   "main": "lib/index.js",
   "module": "src/index.tsx",
   "types": "lib/index.d.ts",
   "scripts": {
     "build": "babel src --out-dir lib --extensions .ts,.tsx --source-maps inline --verbose --copy-files && yarn copy-assets",
-    "copy-assets": "copyfiles -u 1 src/**/*.png lib",
+    "copy-assets": "copyfiles -u 1 \"src/**/*.{png,svg}\" lib",
     "start": "react-scripts start",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

@@ -1,5 +1,6 @@
 'use client';
 import svgSslSecured from '../images/ssl-secured.svg';
+import { assetSrc } from '../assetSrc';
 
 export default function IconPaymentSSL() {
   return (
@@ -15,7 +16,7 @@ export default function IconPaymentSSL() {
           maxWidth: 67,
           padding: 4,
         }}
-        src={svgSslSecured.src}
+        src={assetSrc(svgSslSecured)}
       />
     </div>
   );
