@@ -1,9 +1,7 @@
 'use client';
 import StripePaymentButtons from './StripePaymentButtons';
 import {
-  CardCvcElement,
-  CardExpiryElement,
-  CardNumberElement,
+  CardElement,
   Elements,
   useStripe,
   useElements,
@@ -42,7 +40,7 @@ function InnerForm({
   const stripe = useStripe();
   const elements = useElements();
   function paymentStart(e: any) {
-    const card = (elements as any).getElement(CardNumberElement) as any;
+    const card = (elements as any).getElement(CardElement) as any;
     setLoadingStripePayment(true);
     e.preventDefault();
     if (!stripe || !elements) {
@@ -87,17 +85,9 @@ function InnerForm({
               <strong>Card details</strong>
             </label>
             <div className='d-flex flex-column gap-1'>
-              <CardNumberElement
+              <CardElement
                 className={inputClass}
-                {...CARD_ELEMENT_OPTIONS}
-              />
-              <CardExpiryElement
-                className={inputClass}
-                {...CARD_ELEMENT_OPTIONS}
-              />
-              <CardCvcElement
-                className={inputClass}
-                {...CARD_ELEMENT_OPTIONS}
+                options={CARD_ELEMENT_OPTIONS}
               />
               <PaymentButton loading={loadingStripePayment} />
             </div>
