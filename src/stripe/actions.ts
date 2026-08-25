@@ -1,12 +1,5 @@
 import { PaymentRequestPaymentMethodEvent } from '@stripe/stripe-js';
 
-export async function stripeInitPromise(urlApi: string) {
-  return await fetch(
-    `${urlApi}stripe/master_publishable_key/`,
-    { method: 'GET', mode: 'cors' }
-  ).then((response: any) => response.key);
-}
-
 async function createPaymentIntent(urlApi: string, invoice: any, paymentMethodType?: string) {
   const { id, invoiceToken } = invoice;
   const fetchOptions: any = {
@@ -57,7 +50,7 @@ export async function stripeCardFormSubmit(urlApi: string, stripe: any, card: an
     const stripePayment = await stripe.confirmCardPayment(intent.stripeClientSecret, { payment_method: { card } });
 
     if (stripePayment.error) {
-      throw new Error(stripePayment.error.message || 'Stripe connect unknown error');
+      throw new Error(stripePayment.error.message || 'Stripe unknown error');
     }
 
     return await checkPaymentIntnetIsComplete(urlApi, invoice);

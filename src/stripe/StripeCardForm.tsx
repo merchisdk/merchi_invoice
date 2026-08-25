@@ -1,9 +1,8 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import FormStripeCardFields from './StripeCardFields';
 import {
   stripeCardFormSubmit,
-  stripeInitPromise,
   stripePaymentButtonSubmit,
 } from './actions';
 import { PaymentRequestPaymentMethodEvent } from '@stripe/stripe-js';
@@ -30,7 +29,6 @@ function StripeCardForm({
   const company = domain.company;
   const hasCompanyPubKey = Boolean(company.isStripeValid && companyStripePubKeyOrTestPubKey(company));
   const companyPubKey = hasCompanyPubKey ? companyStripePubKeyOrTestPubKey(company) : '';
-  const canUseConnect = !!company.stripeAccountId;
   const [loadingStripePayment, setLoadingStripePayment] = useState(false);
   const [loadingStripePaymentButtons, setLoadingStripePaymentButtons] = useState(false);
   async function doStripePayment(r: any) {
@@ -57,10 +55,6 @@ function StripeCardForm({
       alertErrorShow(e.message);
     }
   }
-  const [stripePublicKey, setStripePublicKey] = useState(companyPubKey);
-  useEffect(() => {
-    if (!stripePublicKey && canUseConnect) stripeInitPromise(urlApi).then(setStripePublicKey)
-  }, [stripePublicKey, canUseConnect]);
   return (
     <>
       {company.isTesting && badgeTestMode}
@@ -72,7 +66,7 @@ function StripeCardForm({
         loadingStripePaymentButtons={loadingStripePaymentButtons}
         PaymentButton={PaymentButton}
         setLoadingStripePayment={setLoadingStripePayment}
-        stripePubKey={stripePublicKey}
+        stripePubKey={companyPubKey}
       />
     </>
   );
