@@ -86,7 +86,7 @@ function MerchiInvoice({
           </div>
           {!!(acceptStripe && payWithStripe === activeTab) && (
             <div className='w-100'>
-              <Container description='Secure credit card payments powered by Stripe.'>
+              <Container description='Secure payments powered by Stripe.'>
                 <StripeCardForm
                   alertErrorShow={alertErrorShow}
                   invoice={invoice}
