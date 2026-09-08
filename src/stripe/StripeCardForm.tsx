@@ -5,7 +5,7 @@ import LegacyStripeCardForm from './LegacyStripeCardForm';
 
 export default function StripeCardForm(props: any) {
   const { invoice, urlApi, alertErrorShow, callbackStripePaymentSuccess } = props;
-  return <StripePaymentGate apiUrl={urlApi} resource="invoice" resourceId={invoice.id}
+  return <StripePaymentGate engine={invoice.stripePaymentEngine} apiUrl={urlApi} resource="invoice" resourceId={invoice.id}
     resourceToken={invoice.invoiceToken} legacy={<LegacyStripeCardForm {...props} />}>
     <StripePaymentForm apiUrl={urlApi} resource="invoice" resourceId={invoice.id}
     resourceToken={invoice.invoiceToken} onError={alertErrorShow}

@@ -3,6 +3,7 @@ import * as React from 'react';
 import { useEffect, useState } from 'react';
 
 interface Props {
+  engine?: string;
   apiUrl: string;
   resource: 'invoice' | 'cart';
   resourceId: number;
@@ -12,8 +13,20 @@ interface Props {
   children: React.ReactNode;
 }
 
-/** The server chooses the collecting company's engine without starting payment. */
-export function StripePaymentGate({ apiUrl, resource, resourceId, resourceToken, sessionToken, legacy, children }: Props) {
+/** Missing hints from older APIs keep the original form independent of new endpoints. */
+export function StripePaymentGate(props: Props) {
+  const base = `${props.apiUrl.replace(/\/$/, '')}/payments/stripe/${props.resource}/${props.resourceId}/`;
+  let returning = false;
+  if (typeof window !== 'undefined') {
+    returning = !!new URL(window.location.href).searchParams.get('merchi_payment_attempt');
+    try { returning = returning || !!sessionStorage.getItem(`merchi-payment:${base}attempts/`); } catch { /* Optional storage. */ }
+  }
+  if (props.engine !== 'wallet' && !returning) return <>{props.legacy}</>;
+  return <VerifiedStripePaymentGate {...props} />;
+}
+
+/** Only opted-in or already-started wallet payments require a mode lookup. */
+function VerifiedStripePaymentGate({ apiUrl, resource, resourceId, resourceToken, sessionToken, legacy, children }: Props) {
   const [state, setState] = useState<{ key: string; engine?: string; error?: string } | null>(null);
   const [retry, setRetry] = useState(0);
   const base = `${apiUrl.replace(/\/$/, '')}/payments/stripe/${resource}/${resourceId}/`;

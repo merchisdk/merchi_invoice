@@ -4,13 +4,28 @@ import { cleanup, render, screen, waitFor } from '@testing-library/react';
 import { StripePaymentGate } from './StripePaymentGate';
 
 const fetchMock = vi.fn();
-const props = { apiUrl: 'https://api.example/v6/', resource: 'invoice' as const, resourceId: 1,
+const props = { engine: 'wallet', apiUrl: 'https://api.example/v6/', resource: 'invoice' as const, resourceId: 1,
   resourceToken: 'invoice-token', legacy: <div>Original card form</div>, children: <div>Wallet form</div> };
 
 beforeEach(() => { vi.stubGlobal('fetch', fetchMock); fetchMock.mockReset(); sessionStorage.clear(); window.history.replaceState({}, '', '/'); });
 afterEach(() => { cleanup(); vi.unstubAllGlobals(); });
 
 describe('payment engine routing', () => {
+  it.each([undefined, 'legacy', 'invalid'])('renders original form immediately without fetch for hint %s', engine => {
+    fetchMock.mockRejectedValue(new Error('New API unavailable'));
+    render(<StripePaymentGate {...props} engine={engine} />);
+    expect(screen.getByText('Original card form')).toBeTruthy();
+    expect(screen.queryByRole('status')).toBeNull();
+    expect(fetchMock).not.toHaveBeenCalled();
+  });
+  it('recovers a saved wallet attempt even with the default mode disabled', async () => {
+    sessionStorage.setItem('merchi-payment:https://api.example/v6/payments/stripe/invoice/1/attempts/', 'existing');
+    fetchMock.mockResolvedValue({ ok: true, json: async () => ({ engine: 'wallet', attemptId: 'existing' }) });
+    render(<StripePaymentGate {...props} engine="legacy" />);
+    await screen.findByText('Wallet form');
+    expect(new URL(fetchMock.mock.calls[0][0]).searchParams.get('attemptId')).toBe('existing');
+  });
+
   it('uses the original form when the server disables the new engine', async () => {
     fetchMock.mockResolvedValue({ ok: true, json: async () => ({ engine: 'legacy' }) });
     render(<StripePaymentGate {...props} />);
